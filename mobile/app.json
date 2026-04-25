@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "Find School",
+    "slug": "find-school",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "findschool",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*", "assets/db/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "bd.findschool.app",
+      "config": {
+        "googleMapsApiKey": "REPLACE_IOS_GMAPS_KEY"
+      }
+    },
+    "android": {
+      "package": "bd.findschool.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0E7C3A"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "REPLACE_ANDROID_GMAPS_KEY"
+        }
+      },
+      "permissions": ["ACCESS_FINE_LOCATION"]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-sqlite",
+        {
+          "useSQLCipher": false
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "find-school-bd",
+          "project": "mobile"
+        }
+      ]
+    ],
+    "extra": {
+      "sentryDsn": "",
+      "enableSentry": false
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

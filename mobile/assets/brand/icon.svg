@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img"
+     aria-label="Find School app icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E7C3A"/>
+      <stop offset="1" stop-color="#0A5A2A"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <!-- Map pin -->
+  <path d="M256 96c-62 0-112 48-112 108 0 83 96 188 108 200a6 6 0 0 0 8 0
+           c12-12 108-117 108-200 0-60-50-108-112-108z"
+        fill="#FFFFFF"/>
+  <!-- Schoolhouse inside the pin -->
+  <path d="M256 168l-64 40v72h128v-72z" fill="#0E7C3A"/>
+  <rect x="236" y="228" width="40" height="52" fill="#FFFFFF"/>
+  <path d="M192 208h128l-64-40z" fill="#0A5A2A"/>
+  <!-- Small flag pole (Bangladesh nod, green dot on white flag) -->
+  <rect x="300" y="176" width="4" height="44" fill="#0E7C3A"/>
+  <rect x="304" y="176" width="28" height="18" fill="#FFFFFF"/>
+  <circle cx="318" cy="185" r="5" fill="#D62828"/>
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adaptive icon foreground: 108x108 dp visible area inside a 432x432 canvas.
+     Keep all meaningful art within the central 66% (the "safe zone")
+     because Android masks to circle, squircle, teardrop, etc. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 432">
+  <g transform="translate(216 216)">
+    <!-- Map pin, centered -->
+    <path d="M0 -108c-52 0-94 40-94 90 0 70 81 158 91 168a5 5 0 0 0 6 0
+             c10-10 91-98 91-168 0-50-42-90-94-90z"
+          fill="#FFFFFF"/>
+    <!-- Schoolhouse -->
+    <path d="M-54 -48l54-34 54 34v60h-108z" fill="#0E7C3A"/>
+    <rect x="-16" y="2" width="32" height="40" fill="#FFFFFF"/>
+  </g>
+</svg>

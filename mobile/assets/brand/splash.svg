@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Splash: centered logo on brand-green bg. Expo scales this to any size. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1242 2688">
+  <rect width="1242" height="2688" fill="#0E7C3A"/>
+  <g transform="translate(621 1344) scale(1.6)">
+    <path d="M0 -200c-96 0-175 74-175 168 0 130 151 294 169 312a9 9 0 0 0 12 0
+             c18-18 169-182 169-312 0-94-79-168-175-168z"
+          fill="#FFFFFF"/>
+    <path d="M-100 -90l100 -63 100 63v112h-200z" fill="#0E7C3A"/>
+    <rect x="-30" y="4" width="60" height="74" fill="#FFFFFF"/>
+  </g>
+  <text x="621" y="1720" text-anchor="middle"
+        font-family="-apple-system,Roboto,sans-serif" font-size="72"
+        font-weight="700" fill="#FFFFFF" letter-spacing="2">
+    Find School
+  </text>
+</svg>
