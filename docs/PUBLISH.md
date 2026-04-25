@@ -1,135 +1,245 @@
-# Publish Checklist — Human-Only Steps
+# 🚀 Publish Find School BD — Step-by-Step
 
-Everything that can be automated has been. What's left requires accounts,
-billing, or actions that must be taken by you (or the project owner).
+Work through this top to bottom. After each step there's a **"Tell Claude"**
+line — paste that update back into the chat and I'll confirm + unblock the
+next one.
 
-Estimated total time: **2–4 hours of human work**, plus 24–48 hours of Play
-Console review wait time before the app appears in production.
+Total active human time: **~2–4 hours.** Plus 24–48 hours of Play Console
+review wait at the end.
 
 ---
 
-## 1. Google Play Console developer account ($25 one-time)
+## STEP 1 — Enable GitHub Pages for the privacy policy
 
-If you don't have one already:
+⏱ 5 minutes · 💵 free
 
-1. Visit https://play.google.com/console/signup
-2. Pay the $25 one-time registration fee
-3. Verify identity (Google requires government ID for new accounts in 2024+)
+The repo already contains `docs/index.html` ready to serve.
 
-This unlocks the ability to upload AABs.
+1. Open https://github.com/alaminmain/findschool/settings/pages
+2. Under **Build and deployment → Source**: select **Deploy from a branch**
+3. **Branch**: `main` · **Folder**: `/docs` · click **Save**
+4. Wait ~60 seconds, then visit https://alaminmain.github.io/findschool/
+5. Confirm the privacy policy page loads with the green header
 
-## 2. Host the privacy policy on GitHub Pages (free, ~5 minutes)
+📨 **Tell Claude**: *"Pages live at <URL>"* (or paste the error if it 404s)
 
-The repo already has `docs/index.html` ready to serve.
+---
 
-1. Visit `https://github.com/alaminmain/findschool/settings/pages`
-2. Source: **Deploy from a branch**
-3. Branch: **main**, Folder: **/docs**
-4. Save. Within a minute the policy will live at:
-   **https://alaminmain.github.io/findschool/**
-5. Confirm it loads, then this becomes the URL you paste into the Play
-   Console "Privacy policy URL" field later.
+## STEP 2 — Create a Google Play Console developer account
 
-## 3. EAS account + project (free for builds, optional Pro tier)
+⏱ 30–60 minutes · 💵 $25 one-time
+
+> Skip this step if you already have an account.
+
+1. Open https://play.google.com/console/signup
+2. Sign in with the Google account you want to own the app
+3. Choose **Organization** or **Personal** (Personal is fine for v1)
+4. Pay $25 (Visa/Mastercard/PayPal). The fee is one-time, not annual.
+5. Verify identity — Google requires a government-issued ID photo for new
+   accounts. Approval is usually <24h but can take longer.
+
+📨 **Tell Claude**: *"Play Console verified"* (or *"Pending verification"*
+if Google is still reviewing)
+
+---
+
+## STEP 3 — Create an Expo / EAS account
+
+⏱ 5 minutes · 💵 free
+
+> Skip if you already have one.
+
+1. Sign up at https://expo.dev/signup
+2. Confirm the email link
+
+📨 **Tell Claude**: *"Expo account ready"*
+
+---
+
+## STEP 4 — Link the local project to your Expo account
+
+⏱ 5 minutes
 
 ```bash
-cd mobile
-npm install -g eas-cli      # if not already installed
-npx eas login               # paste your Expo account credentials
-npx eas init                # links the local project to your Expo account
-                            # (creates an "expo.extra.eas.projectId" entry)
+cd D:/TestProject/findSchoolApp/mobile
+npm install -g eas-cli
+npx eas login
+# paste your Expo email + password
+npx eas init
+# accept the prompts; this writes expo.extra.eas.projectId into app.json
 ```
 
-If you don't have an Expo account, sign up at https://expo.dev/signup
-(free).
+📨 **Tell Claude**: *"EAS project linked, projectId is <id>"* — and commit
+the `app.json` change with: `git add mobile/app.json && git commit -m "chore: link EAS project" && git push`
 
-## 4. Build the production AAB
+---
+
+## STEP 5 — Build the production AAB
+
+⏱ 15 min cloud build · 💵 free (Expo's free tier allows ~30 builds/month)
 
 ```bash
-cd mobile
+cd D:/TestProject/findSchoolApp/mobile
 npx eas build --profile production --platform android
 ```
 
-This runs in Expo's cloud (~15 minutes). When it finishes, EAS gives you a
-download URL for the `.aab` file. The free tier allows ~30 builds/month
-which is plenty for a single launch.
+What you'll see:
+- "Compressing project files…"
+- "Build queued…"
+- A URL like `https://expo.dev/accounts/.../builds/<id>` — open it to watch
+- Build runs ~10–15 minutes
+- When it finishes, EAS prints a download URL ending in `.aab`
 
-## 5. Play Console: create the app
-
-1. Visit https://play.google.com/console
-2. Create app:
-   - App name: **Find School BD**
-   - Default language: **English (United States)**
-   - App or game: **App**
-   - Free or paid: **Free**
-3. Add Bengali (`bn-BD`) as a translation under
-   *Grow → Store presence → Store listings*
-4. Paste the listing copy:
-   - English: from `mobile/store/listing-en.md`
-   - Bengali: from `mobile/store/listing-bn.md`
-
-## 6. Play Console: graphics
-
-Upload from `mobile/assets/` and `mobile/store/`:
-
-| Field                    | File                             | Size      |
-|--------------------------|----------------------------------|-----------|
-| App icon                 | `mobile/store/play-icon.png`     | 512×512   |
-| Feature graphic          | `mobile/store/feature-graphic.png` | 1024×500 |
-| Phone screenshots (2–8)  | **TODO: capture from emulator**  | 1080×2400 |
-
-**Screenshots**: run the app on a Pixel 7 emulator, follow the storyboard in
-`mobile/store/screenshots-plan.md` (8 frames). Capture with
-`adb shell screencap -p /sdcard/s1.png`. This is the one piece of
-publish-prep that genuinely requires the app running on a device.
-
-## 7. Play Console: app content questionnaires
-
-Use `mobile/store/data-safety-answers.md` as the cheat sheet. Specifically:
-
-- **Privacy policy URL**: `https://alaminmain.github.io/findschool/`
-- **App access**: All functionality available without restrictions
-- **Ads**: No ads
-- **Content rating**: complete IARC questionnaire → expect **Everyone / PEGI 3**
-- **Target audience**: 13+ (avoids Families Policy overhead, app remains
-  safe for younger users)
-- **Data safety**: see the cheat sheet — answer **No data collected**
-- **Government app?**: **No**
-- **News app?**: **No**
-- **Financial features?**: **No**
-
-## 8. Play Console: upload AAB to Internal Testing first
-
-1. Test and Release → Internal testing → Create new release
-2. Upload the `.aab` from EAS
-3. Add yourself + 1-2 trusted testers via email
-4. Submit for review (Internal testing usually goes live within a few hours)
-5. Install via the testing link, sanity-check on a real device
-
-## 9. Promote to production
-
-Once Internal testing looks clean:
-1. Test and Release → Production → Create new release
-2. Promote the same AAB from internal
-3. Submit for review (24–48 hour first-app review)
-4. Once approved, choose rollout %: start at 20%, monitor crash rate, then
-   scale to 100% over a few days
-
-## 10. Post-launch (first 30 days)
-
-- Watch Play Console **Vitals** for ANRs and crash rate
-- Reply to every review (big ASO signal)
-- If a bad DB ships, release a patch version with a corrected
-  `mobile/assets/db/find-school.db`; users re-copy on next launch
+📨 **Tell Claude**: *"AAB ready at <URL>"* (or paste any build error)
 
 ---
 
-## What we deliberately deferred
+## STEP 6 — Capture screenshots from an Android emulator
 
-| Item                  | Why deferred                                              | Plan                                                  |
-|-----------------------|-----------------------------------------------------------|-------------------------------------------------------|
-| GPS coordinates       | IPEMIS API doesn't return them; bulk Nominatim disallowed | Agentic AI pass, post-launch (per project decision)   |
-| Google Maps API key   | App ships without rendering tiles (no GPS to render yet)  | Add when GPS data lands; set via EAS secret          |
-| Sentry DSN            | Off by default to honour zero-data-collection policy      | Enable when there's appetite for crash insight        |
-| iOS submission        | Single-platform launch                                    | Reuse listing copy after Android stabilizes          |
-| BANBEIS / madrasahs   | Out of IPEMIS coverage                                    | Add as supplementary CSV imports later                |
+⏱ 30–45 minutes
+
+This is the only step that needs the app actually running. You need
+**Android Studio** (free) installed for the emulator.
+
+1. Open Android Studio → **Device Manager** → create a **Pixel 7** virtual
+   device with Android 14
+2. Boot it
+3. Drag the `.aab` from EAS onto the emulator window — wait, AAB doesn't
+   install directly. Instead use the EAS-provided `.apk` from the **preview**
+   build profile, or run:
+   ```bash
+   cd D:/TestProject/findSchoolApp/mobile
+   npx eas build --profile preview --platform android   # outputs .apk
+   ```
+4. `adb install path/to/find-school.apk`
+5. Open the app, follow `mobile/store/screenshots-plan.md`'s 8-frame
+   storyboard
+6. For each frame:
+   ```bash
+   adb shell screencap -p /sdcard/s1.png
+   adb pull /sdcard/s1.png ./mobile/store/screenshots/s1.png
+   ```
+   Repeat for s1.png through s8.png
+
+📨 **Tell Claude**: *"8 screenshots captured in mobile/store/screenshots/"*
+— I'll commit them and add captions if you want.
+
+---
+
+## STEP 7 — Play Console: create the app listing
+
+⏱ 20 minutes
+
+1. Open https://play.google.com/console
+2. **Create app**:
+   - Name: **Find School BD**
+   - Default language: **English (United States)**
+   - App or game: **App**
+   - Free or paid: **Free**
+   - Tick the developer-program-policy + US export-laws boxes
+3. **Set up your app** sidebar — work top to bottom
+
+### App content section
+| Item                  | Answer / source                                                                 |
+|-----------------------|---------------------------------------------------------------------------------|
+| Privacy policy        | `https://alaminmain.github.io/findschool/`                                      |
+| App access            | All functionality available without restrictions                                |
+| Ads                   | **No, my app does not contain ads**                                             |
+| Content rating        | Complete IARC questionnaire — expect **Everyone / PEGI 3**                      |
+| Target audience       | **13+** (avoids Families Policy overhead; app is still safe for younger users)  |
+| News app              | **No**                                                                          |
+| Government app        | **No**                                                                          |
+| COVID/health app      | **No**                                                                          |
+| Data safety           | Use the cheat sheet at `mobile/store/data-safety-answers.md` — **No data collected** |
+
+### Main store listing
+| Field                | Source file / value                                  |
+|----------------------|------------------------------------------------------|
+| App name             | `Find School BD — Offline Directory`                 |
+| Short description    | From `mobile/store/listing-en.md` (under 80 chars)   |
+| Full description     | Paste full description from `listing-en.md`          |
+| App icon (512×512)   | Upload `mobile/store/play-icon.png`                  |
+| Feature graphic      | Upload `mobile/store/feature-graphic.png`            |
+| Phone screenshots    | Upload all 8 from `mobile/store/screenshots/`        |
+
+### Bengali translation
+- Sidebar → **Grow → Store presence → Store listings**
+- Add `Bengali (bn-BD)`
+- Paste content from `mobile/store/listing-bn.md`
+
+📨 **Tell Claude**: *"Listing complete except <X>"* if any field needs
+clarification.
+
+---
+
+## STEP 8 — Upload AAB to Internal Testing
+
+⏱ 15 minutes
+
+1. **Test and release → Internal testing → Create new release**
+2. Upload the `.aab` you got from EAS in Step 5
+3. Release name auto-fills from version code; leave it
+4. **Release notes**: paste *"First public release — 65,000+ schools
+   searchable offline."*
+5. **Save** → **Review release** → **Start rollout to Internal testing**
+6. Add your email to the **Testers** list
+7. Open the **Web URL** that Play Console gives you, on your phone, click
+   **Become a tester**
+8. Install the app from the Play Store link
+9. Sanity check: search "Dhaka", tap a result, confirm details show
+10. **Confirm**: no crashes, app icon shows, splash screen shows, search
+    returns instant results
+
+📨 **Tell Claude**: *"Internal testing live, app works on device"* — I'll
+help debug if anything is broken.
+
+---
+
+## STEP 9 — Promote to Production
+
+⏱ 5 minutes + 24–48 hour review
+
+1. **Test and release → Production → Create new release**
+2. **Use existing release** → pick the AAB from Internal testing
+3. Same release notes as Step 8
+4. **Rollout percentage**: start at **20%** — safer for first launch; you
+   can scale to 100% over a few days as crash rate stays clean
+5. **Save → Review release → Start rollout to Production**
+6. Wait. First-app review at Google takes 24–48 hours; sometimes longer.
+
+📨 **Tell Claude**: *"Submitted for review at <timestamp>"*
+
+---
+
+## STEP 10 — Live monitoring (first 7 days)
+
+When approved, you'll get an email. The app appears at
+`https://play.google.com/store/apps/details?id=bd.findschool.app`.
+
+Daily check (5 min):
+1. Play Console → **Vitals** — watch ANRs and crash rate
+2. **Reviews** — reply to every review (big ASO signal)
+3. If crash rate >1% from Vitals: halt rollout, debug, ship a patch
+4. After 3 clean days: scale rollout 20% → 50% → 100%
+
+📨 **Tell Claude**: *"App live, X installs, Y crashes"* — I'll help you
+prioritize the post-launch backlog (geocoding, BANBEIS, iOS, etc.).
+
+---
+
+## Things you do NOT need before publishing
+
+| Item                  | Why not                                                            |
+|-----------------------|--------------------------------------------------------------------|
+| Google Maps API key   | No school has GPS yet; the MapView never mounts                    |
+| Sentry DSN            | Disabled by default; required for the privacy promise              |
+| `play-service-account.json` | Only needed for `eas submit` automation; manual upload works |
+| iOS build             | Single-platform launch is fine; iOS reuses 90% of the listing copy |
+
+---
+
+## If something breaks
+
+Paste the error or screenshot back into the chat. I keep this checklist as
+my map of where we are, so I'll know which step you were on without you
+having to re-explain.
