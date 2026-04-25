@@ -22,16 +22,20 @@
 - **Release**: `eas.json` (dev/preview/production profiles) + `store/release-checklist.md`
 
 ## Remaining human-only steps (blocking first upload)
+See [`docs/PUBLISH.md`](docs/PUBLISH.md) for the step-by-step. The short list:
+
 1. ~~Run the scraper across all 492 upazilas → produce a complete `schools_raw.csv`.~~ ✅
-   Replaced by IPEMIS DataTables API (`scraper/fetch_ipemis_api.py`). 65,569 rows.
 2. ~~Build `find-school.db` and drop into `mobile/assets/db/`.~~ ✅
-   `mobile/assets/db/find-school.db` (35 MB, FTS5 on EN + BN).
-3. Rasterize SVG brand assets per `assets/brand/README.md`.
-4. Provision a Google Maps API key (Android) → paste into `app.json`.
-5. Register Play Console app under `bd.findschool.app`, create service
-   account, save JSON to `mobile/play-service-account.json` (gitignored).
-6. Host the privacy policy at a real URL (e.g. GitHub Pages on the repo).
-7. `cd mobile && npm install && npx eas build --profile production -p android`.
+3. ~~Rasterize SVG brand assets.~~ ✅ (`mobile/assets/{icon,adaptive-icon,splash,favicon}.png`, `mobile/store/{play-icon,feature-graphic}.png`)
+4. ~~Privacy policy hosted~~ ✅ — site source in `docs/`. Enable GitHub Pages on `main`/`/docs`.
+5. **Google Play Console developer account** ($25 one-time). Cannot be done programmatically.
+6. **Expo / EAS account** + `npx eas build --profile production -p android`.
+7. **Capture 8 phone screenshots** from a running emulator per `mobile/store/screenshots-plan.md`.
+8. **Upload AAB**, paste listings + answers from `mobile/store/`, submit for review.
+
+Google Maps API key is **not** required for the first build — no school has GPS
+yet, so the MapView never mounts. Add the key when the agentic-AI geocoding
+pass populates coordinates.
 
 ## Optional follow-ups (not blocking)
 - ~~Nominatim geocoding fallback in the admin tool for rows missing lat/long.~~ ✅ Done — see `admin/README.md`.

@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { openDatabase } from "@/db/bootstrap";
 import type { School } from "@/db/queries";
 
@@ -73,7 +73,6 @@ export default function SchoolDetail() {
         <>
           <MapView
             style={styles.map}
-            provider={PROVIDER_GOOGLE}
             initialRegion={{
               latitude: school.latitude!,
               longitude: school.longitude!,

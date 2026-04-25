@@ -7,7 +7,7 @@ Thumbs.db
 *.swo
 
 # === Claude / local tooling ===
-.claude/settings.local.json
+.claude/
 
 # === Secrets ===
 .env
@@ -64,13 +64,9 @@ scraper/schools_raw.csv
 *.db-wal
 *.db-journal
 
-# === Rasterized brand outputs (regenerate from SVG sources) ===
-mobile/assets/icon.png
-mobile/assets/adaptive-icon.png
-mobile/assets/splash.png
-mobile/assets/favicon.png
-mobile/store/play-icon.png
-mobile/store/feature-graphic.png
+# === Brand outputs ===
+# Rasterized PNGs are tracked so the repo builds without re-running the
+# rasterizer. Regenerate with `python scraper/rasterize_brand.py`.
 mobile/store/screenshots/
 
 # === EAS / build outputs ===

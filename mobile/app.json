@@ -5,15 +5,18 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0E7C3A"
+    },
     "scheme": "findschool",
     "userInterfaceStyle": "automatic",
     "assetBundlePatterns": ["**/*", "assets/db/*"],
+    "privacy": "public",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "bd.findschool.app",
-      "config": {
-        "googleMapsApiKey": "REPLACE_IOS_GMAPS_KEY"
-      }
+      "bundleIdentifier": "bd.findschool.app"
     },
     "android": {
       "package": "bd.findschool.app",
@@ -21,12 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0E7C3A"
       },
-      "config": {
-        "googleMaps": {
-          "apiKey": "REPLACE_ANDROID_GMAPS_KEY"
-        }
-      },
-      "permissions": ["ACCESS_FINE_LOCATION"]
+      "permissions": []
     },
     "plugins": [
       "expo-router",

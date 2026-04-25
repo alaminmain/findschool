@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find School BD</title>
+  <meta name="description" content="Offline directory of every school in Bangladesh. 65,000+ institutions, searchable without internet.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root { --brand: #0E7C3A; --ink: #1a1a1a; --muted: #555; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           color: var(--ink); margin: 0; line-height: 1.6; }
+    header { background: var(--brand); color: #fff; padding: 48px 24px; text-align: center; }
+    header img { width: 96px; height: 96px; border-radius: 22px; }
+    header h1 { margin: 16px 0 4px; font-size: 32px; }
+    header p { margin: 0; opacity: 0.9; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 24px 64px; }
+    nav { display: flex; gap: 16px; justify-content: center; margin-top: 16px; }
+    nav a { color: #fff; text-decoration: underline; }
+    h2 { color: var(--brand); margin-top: 32px; }
+    a { color: var(--brand); }
+    .meta { color: var(--muted); font-size: 14px; }
+    footer { text-align: center; color: var(--muted); padding: 24px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="favicon.png" alt="Find School icon">
+    <h1>Find School BD</h1>
+    <p>65,000+ schools in Bangladesh, searchable offline.</p>
+    <nav>
+      <a href="#privacy">Privacy</a>
+      <a href="https://github.com/alaminmain/findschool">GitHub</a>
+      <a href="mailto:hello@findschool.app">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="privacy">
+      <h2>Privacy Policy</h2>
+      <p class="meta">Last updated: 25 April 2026 &middot; Effective: 25 April 2026</p>
+
+      <p><strong>Plain-language summary.</strong> Find School is an offline school
+      directory app for Bangladesh. <em>We do not collect, transmit, store,
+      sell, or share any personal information about you.</em> All searches and
+      map interactions happen on your device.</p>
+
+      <h2>1. Information we do not collect</h2>
+      <p>We do not collect, and we have no servers that receive:</p>
+      <ul>
+        <li>your name, email, phone number, or any account identifier</li>
+        <li>your location (the app does not request location permission)</li>
+        <li>your searches, tap events, or any analytics</li>
+        <li>any advertising identifier</li>
+      </ul>
+
+      <h2>2. Information the app uses locally</h2>
+      <p>The following stays on your device and is never transmitted:</p>
+      <ul>
+        <li><strong>School database</strong> — a read-only SQLite file bundled with
+            the app. No writes, no sync.</li>
+        <li><strong>Search input</strong> — your queries are executed against the
+            local database in memory; nothing is logged.</li>
+      </ul>
+
+      <h2>3. Third-party services</h2>
+      <ul>
+        <li><strong>Google Maps / Google Play Services</strong> — when you tap
+        "Get Directions" we hand off to Google Maps via a standard OS intent.
+        Google's handling of that request is governed by
+        <a href="https://policies.google.com/privacy">Google's privacy policy</a>.
+        Find School itself does not share anything with Google.</li>
+        <li><strong>Crash reports (optional)</strong> — if enabled in a future
+        release, anonymous crash stack traces may be sent to Sentry. At launch
+        this is disabled.</li>
+      </ul>
+
+      <h2>4. Permissions</h2>
+      <p>The app declares no runtime permissions beyond what the OS grants by
+      default. Network access is used only for system-level map rendering when
+      you open a map; all directory data is local.</p>
+
+      <h2>5. Children</h2>
+      <p>The app is rated for all ages. Because it does not collect any
+      information from anyone, it is safe for use by minors.</p>
+
+      <h2>6. Data retention &amp; deletion</h2>
+      <p>There is no server-side data to retain or delete. Removing the app
+      deletes the local database from your device. To request deletion of any
+      support email you've sent us, write to <a href="mailto:hello@findschool.app">
+      hello@findschool.app</a>.</p>
+
+      <h2>7. Changes</h2>
+      <p>We update the "Last updated" date above and announce material changes
+      in the release notes of the next version.</p>
+
+      <h2>8. Contact</h2>
+      <p><a href="mailto:hello@findschool.app">hello@findschool.app</a></p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2026 Find School BD &middot; MIT License &middot;
+    <a href="https://github.com/alaminmain/findschool">source</a>
+  </footer>
+</body>
+</html>
