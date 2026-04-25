@@ -12,7 +12,10 @@
     },
     "scheme": "findschool",
     "userInterfaceStyle": "automatic",
-    "assetBundlePatterns": ["**/*", "assets/db/*"],
+    "assetBundlePatterns": [
+      "**/*",
+      "assets/db/*"
+    ],
     "privacy": "public",
     "ios": {
       "supportsTablet": true,
@@ -44,10 +47,17 @@
     ],
     "extra": {
       "sentryDsn": "",
-      "enableSentry": false
+      "enableSentry": false,
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1130ec74-99cd-4123-8f3d-c6c2257b6cf2"
+      }
     },
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "owner": "alamindev01"
   }
 }
