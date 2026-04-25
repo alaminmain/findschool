@@ -13,6 +13,9 @@ public class School
     [Column("name")]
     public string Name { get; set; } = string.Empty;
 
+    [Column("name_bn")]
+    public string NameBn { get; set; } = string.Empty;
+
     [Column("level")]
     public string Level { get; set; } = string.Empty;
 

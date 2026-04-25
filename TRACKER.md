@@ -22,9 +22,10 @@
 - **Release**: `eas.json` (dev/preview/production profiles) + `store/release-checklist.md`
 
 ## Remaining human-only steps (blocking first upload)
-1. Run the scraper across all 492 upazilas → produce a complete `schools_raw.csv`.
-2. Run `dotnet run` in `admin/FindSchool.Admin/` to build `find-school.db`;
-   drop into `mobile/assets/db/`.
+1. ~~Run the scraper across all 492 upazilas → produce a complete `schools_raw.csv`.~~ ✅
+   Replaced by IPEMIS DataTables API (`scraper/fetch_ipemis_api.py`). 65,569 rows.
+2. ~~Build `find-school.db` and drop into `mobile/assets/db/`.~~ ✅
+   `mobile/assets/db/find-school.db` (35 MB, FTS5 on EN + BN).
 3. Rasterize SVG brand assets per `assets/brand/README.md`.
 4. Provision a Google Maps API key (Android) → paste into `app.json`.
 5. Register Play Console app under `bd.findschool.app`, create service
@@ -34,6 +35,12 @@
 
 ## Optional follow-ups (not blocking)
 - ~~Nominatim geocoding fallback in the admin tool for rows missing lat/long.~~ ✅ Done — see `admin/README.md`.
-- BANBEIS scraper variant (secondary schools use a different portal).
+- **Geocode the 65k IPEMIS rows** — none have lat/long. The `--geocode` pass
+  needs a self-hosted Nominatim (public tier won't allow bulk). Until then,
+  the MapView screen shows "No GPS coordinates on file" for every school.
+- Merge supplementary CSV sources (e.g. `cleaned_school_data.csv`) for
+  schools the IPEMIS API misses (private secondary, madrasahs, colleges).
+- OCR-based PDF importer is in `scraper/parse_mpo_pdf.py` (RapidOCR) for
+  ad-hoc scanned circulars from MoE.
 - iOS track (listing copy reusable; needs APNs + separate App Store Connect setup).
 - In-app "report a missing school" mailto link → pre-fills hello@findschool.app.

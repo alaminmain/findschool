@@ -3,6 +3,7 @@ import { openDatabase } from "./bootstrap";
 export type School = {
   eiin: string;
   name: string;
+  name_bn: string;
   level: string;
   address: string;
   division: string;
@@ -24,7 +25,7 @@ export async function searchSchools(q: string, offset = 0): Promise<School[]> {
 
   if (!query) {
     return db.getAllAsync<School>(
-      `SELECT eiin, name, level, address, division, district, upazila,
+      `SELECT eiin, name, name_bn, level, address, division, district, upazila,
               latitude, longitude
        FROM Schools
        ORDER BY name
@@ -43,7 +44,7 @@ export async function searchSchools(q: string, offset = 0): Promise<School[]> {
       .join(" ") || `${query}*`;
 
   return db.getAllAsync<School>(
-    `SELECT s.eiin, s.name, s.level, s.address, s.division, s.district,
+    `SELECT s.eiin, s.name, s.name_bn, s.level, s.address, s.division, s.district,
             s.upazila, s.latitude, s.longitude
      FROM schools_fts f
      JOIN Schools s ON s.rowid = f.rowid

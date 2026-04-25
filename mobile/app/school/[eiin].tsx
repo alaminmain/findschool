@@ -21,7 +21,7 @@ export default function SchoolDetail() {
     (async () => {
       const db = await openDatabase();
       const row = await db.getFirstAsync<School>(
-        `SELECT eiin, name, level, address, division, district, upazila,
+        `SELECT eiin, name, name_bn, level, address, division, district, upazila,
                 latitude, longitude
          FROM Schools WHERE eiin = ?`,
         [eiin]
@@ -61,6 +61,7 @@ export default function SchoolDetail() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.name}>{school.name}</Text>
+        {school.name_bn ? <Text style={styles.nameBn}>{school.name_bn}</Text> : null}
         <Text style={styles.meta}>EIIN {school.eiin} · {school.level}</Text>
         <Text style={styles.meta}>{school.address}</Text>
         <Text style={styles.meta}>
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
   header: { padding: 16, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: "#e0e0e0" },
   name: { fontSize: 20, fontWeight: "700", color: "#222", marginBottom: 4 },
+  nameBn: { fontSize: 16, color: "#444", marginBottom: 4 },
   meta: { fontSize: 14, color: "#555", marginTop: 2 },
   map: { flex: 1 },
   cta: {

@@ -34,6 +34,7 @@ using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.Invarian
         {
             Eiin = rec.eiin,
             Name = rec.name,
+            NameBn = rec.name_bn ?? string.Empty,
             Level = rec.level,
             Address = rec.address,
             Division = rec.division,
@@ -155,6 +156,6 @@ static string BuildQuery(School s)
 }
 
 internal sealed record CsvRow(
-    string eiin, string name, string level, string address,
+    string eiin, string name, string? name_bn, string level, string address,
     string division, string district, string upazila,
     double? latitude, double? longitude);

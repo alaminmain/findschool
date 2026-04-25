@@ -26,7 +26,8 @@ public sealed class SchoolDb : IAsyncDisposable
         // FTS5 virtual table for fuzzy school-name search on device.
         await _conn.ExecuteAsync(
             @"CREATE VIRTUAL TABLE IF NOT EXISTS schools_fts USING fts5(
-                eiin UNINDEXED, name, address, district, upazila,
+                eiin UNINDEXED, name, name_bn, address, district, upazila,
+                tokenize = 'unicode61',
                 content='Schools', content_rowid='rowid'
             );");
     }

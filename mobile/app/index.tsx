@@ -124,7 +124,7 @@ const Row = ({ item }: { item: School }) => (
     android_ripple={{ color: "#eee" }}
   >
     <Text style={styles.name} numberOfLines={1}>
-      {item.name}
+      {item.name || item.name_bn}
     </Text>
     <Text style={styles.meta} numberOfLines={1}>
       {item.eiin} · {item.upazila}, {item.district}

@@ -23,9 +23,16 @@ TRACKER.md  Live phase tracker (single source of truth for status)
 ## Stack-specific conventions
 
 ### scraper/ (Python)
-- Playwright sync API, dataclasses for rows, CSV append (so partial runs are resumable).
-- Include `time.sleep` between pages — the portal throttles aggressively.
-- Selectors are portal-dependent; verify against live DOM before full runs.
+- **Primary source**: `fetch_ipemis_api.py` hits the public DataTables endpoint
+  `https://ipemis.dpe.gov.bd/load-lite-school-list`. No auth. 65,569 rows. Required
+  headers: `x-requested-with: XMLHttpRequest` + a same-origin `referer`.
+  Pagination is `start`/`length`; `length=1000` is the safe sweet spot.
+- **Secondary (ad-hoc) source**: `parse_mpo_pdf.py` OCRs scanned MoE circulars via
+  RapidOCR + positional column clustering. Use only when a JSON API isn't available.
+- `scrape_ipemis.py` (the original Playwright stub) is kept for reference only —
+  the public school-directory HTML page returns a system-error and requires login.
+- Force UTF-8 stdout on Windows: `sys.stdout = io.TextIOWrapper(sys.stdout.buffer,
+  encoding="utf-8", errors="replace")` — Bangla text crashes cp1252 otherwise.
 
 ### admin/ (.NET 9)
 - `sqlite-net-pcl` attribute-driven schema (see `School.cs`). Don't hand-write DDL.
