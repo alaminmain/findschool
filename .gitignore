@@ -33,8 +33,7 @@ admin/**/bin/
 admin/**/obj/
 admin/**/*.user
 admin/**/*.suo
-*.db-shm
-*.db-wal
+admin/**/geocode-cache.json
 
 # === Python ===
 scraper/__pycache__/
@@ -49,6 +48,7 @@ scraper/*.pyc
 scraper/schools_raw.csv
 *.db-shm
 *.db-wal
+*.db-journal
 
 # === Rasterized brand outputs (regenerate from SVG sources) ===
 mobile/assets/icon.png

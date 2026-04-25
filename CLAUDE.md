@@ -32,6 +32,9 @@ TRACKER.md  Live phase tracker (single source of truth for status)
 - Bulk inserts **must** use `RunInTransactionAsync` with 2,000-row batches; without this, 65k inserts take minutes.
 - After insert: rebuild FTS (`INSERT INTO schools_fts(schools_fts) VALUES('rebuild')`) then `VACUUM`.
 - Re-runs are idempotent via `[PrimaryKey]` on `Eiin` + `InsertOrReplace`.
+- Geocoding fallback (`--geocode --email x`) uses Nominatim. **Hard rules**: 1 req/sec
+  (enforced in `NominatimGeocoder`), User-Agent with contact email, results cached in
+  `geocode-cache.json`. For bulk >5k rows, self-host Nominatim — don't lift the cap.
 
 ### mobile/ (Expo)
 - Path alias `@/*` resolves to `mobile/src/*` (see `tsconfig.json`).

@@ -33,7 +33,7 @@
 7. `cd mobile && npm install && npx eas build --profile production -p android`.
 
 ## Optional follow-ups (not blocking)
-- Nominatim geocoding fallback in the admin tool for rows missing lat/long.
+- ~~Nominatim geocoding fallback in the admin tool for rows missing lat/long.~~ ✅ Done — see `admin/README.md`.
 - BANBEIS scraper variant (secondary schools use a different portal).
 - iOS track (listing copy reusable; needs APNs + separate App Store Connect setup).
 - In-app "report a missing school" mailto link → pre-fills hello@findschool.app.

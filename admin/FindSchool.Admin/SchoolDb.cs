@@ -47,6 +47,16 @@ public sealed class SchoolDb : IAsyncDisposable
 
     public async Task VacuumAsync() => await _conn.ExecuteAsync("VACUUM;");
 
+    public Task<List<School>> GetMissingCoordsAsync(int limit) =>
+        _conn.QueryAsync<School>(
+            "SELECT * FROM Schools WHERE latitude IS NULL OR longitude IS NULL LIMIT ?",
+            limit);
+
+    public Task<int> UpdateCoordsAsync(string eiin, double lat, double lon) =>
+        _conn.ExecuteAsync(
+            "UPDATE Schools SET latitude = ?, longitude = ?, geocoded = 1 WHERE eiin = ?",
+            lat, lon, eiin);
+
     public ValueTask DisposeAsync() => _conn.CloseAsync().AsValueTask();
 }
 
