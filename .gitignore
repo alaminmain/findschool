@@ -42,12 +42,13 @@ scraper/.venv/
 scraper/venv/
 scraper/*.pyc
 
-# === Large data artifacts (generated, not source) ===
-# The shipped SQLite DB and raw scrape output are too large for git.
-# Keep generation reproducible via scripts; share binaries via Releases / LFS.
+# === Large data artifacts ===
+# Raw scrape CSV stays out of git (regeneratable, large, noisy diffs).
+# find-school.db IS tracked so the mobile app can build straight from clone.
+# If it crosses ~50 MB, switch to Git LFS or a GitHub Release asset.
 scraper/schools_raw.csv
-admin/**/find-school.db
-mobile/assets/db/find-school.db
+*.db-shm
+*.db-wal
 
 # === Rasterized brand outputs (regenerate from SVG sources) ===
 mobile/assets/icon.png
