@@ -28,7 +28,7 @@
         "backgroundColor": "#0E7C3A"
       },
       "permissions": [],
-      "versionCode": 2
+      "versionCode": 4
     },
     "plugins": [
       "expo-router",
