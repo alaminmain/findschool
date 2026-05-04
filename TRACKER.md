@@ -1,6 +1,57 @@
 # 🟢 PROJECT TRACKER — FIND SCHOOL
 
-**Current Status:** ALL TASKS SCAFFOLDED — ready for first AAB build.
+**Current Status:** Build hygiene cleared (2026-04-28). Gradle release build passes
+end-to-end through `:app:processReleaseManifest`. Ready for first EAS production AAB.
+
+## Pre-flight cleanup completed 2026-04-27 (extended 2026-04-28)
+- Bumped `app.json.version` → `1.0.0` (and `package.json.version` to match).
+- Removed deprecated `expo.privacy: "public"` from `app.json` (no longer in schema).
+- Sentry plugin pipeline: only `@sentry/react-native/expo` is wired (source-map +
+  autolink in one). Runtime Sentry stays gated on `extra.enableSentry === true`
+  AND a non-empty `extra.sentryDsn` — both false. Source-map upload at gradle
+  time is suppressed via `SENTRY_DISABLE_AUTO_UPLOAD=true` in every `eas.json`
+  build profile, so builds succeed without a `SENTRY_AUTH_TOKEN`. To enable
+  Sentry: provide a DSN, flip `enableSentry`, drop the env var, and supply
+  `SENTRY_AUTH_TOKEN`.
+- Deduped `assetBundlePatterns` (`assets/db/*` was redundant under `**/*`).
+- The local `mobile/android/` folder is gitignored and regenerated on every
+  `expo prebuild`; an earlier checked-in copy had drifted (debug keystore on
+  release, AAR-merged storage permissions). EAS regenerates a clean folder
+  per build.
+- **AAR-merged permission strip (2026-04-28):** filtering the source manifest
+  is not enough — library AARs (notably `react-native-maps`' Play Services
+  deps) re-inject `READ_/WRITE_EXTERNAL_STORAGE` during gradle's
+  `processReleaseManifest`. `mobile/plugins/withCleanManifest.js` now emits
+  `tools:node="remove"` directives for `READ_/WRITE_EXTERNAL_STORAGE`,
+  `SYSTEM_ALERT_WINDOW`, `VIBRATE` so the manifest merger drops them. Verified:
+  the merged release manifest contains only `INTERNET` plus
+  normal/non-dangerous permissions (`ACCESS_NETWORK_STATE`, `WAKE_LOCK`,
+  `RECEIVE_BOOT_COMPLETED`, `FOREGROUND_SERVICE`, internal signature-level
+  receiver permission). None require runtime prompts and none change the
+  data-safety answers.
+- Ran `npx expo install --fix`: aligned `react-native@0.76.9`,
+  `react-native-screens@~4.4.0`, `expo-sqlite@~15.1.4`,
+  `@sentry/react-native@~6.10.0` to Expo SDK 52 expected versions.
+- Resolved 19 transitive `npm audit` advisories down to **0** via three
+  surgical `package.json` overrides — `uuid@^14`, `@xmldom/xmldom@^0.9`,
+  `postcss@^8.5.10`. All three targets are build-time-only Expo CLI tooling
+  (plist writer, metro CSS); none ships in the AAB. A `tar@^7` override was
+  attempted and reverted because it broke `cacache`'s `tar.extract()` call.
+  We did **not** run `npm audit fix --force` because its proposed remediation
+  is to downgrade to `expo@49.0.23`, a 3-major SDK regression.
+- `tsc --noEmit` passes; `expo-doctor` reports 17/17 checks passing;
+  `npm audit` reports 0 vulnerabilities; `expo config --type prebuild`
+  resolves end-to-end; `npx expo export --platform android` produces a clean
+  3.67 MB Hermes bundle + 35.3 MB DB asset; `./gradlew :app:processReleaseManifest`
+  succeeds in ~1m 44s.
+
+## Version policy
+- Stay on Expo SDK **52** through first ship + 30 days of vitals. The
+  `npm outdated` "Latest" column shows SDK 55 across the board, but every
+  one of those bumps requires the SDK 55 migration. Do that as a planned
+  follow-up, not pre-launch.
+- The four overrides above stay until SDK 55+ rolls newer transitive
+  versions naturally. Recheck on every SDK bump.
 
 | #   | Task                                                       | Status         | Artifacts                                                                                |
 |-----|------------------------------------------------------------|----------------|------------------------------------------------------------------------------------------|

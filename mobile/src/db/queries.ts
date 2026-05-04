@@ -34,6 +34,20 @@ export async function searchSchools(q: string, offset = 0): Promise<School[]> {
     );
   }
 
+  // EIIN lookup: pure-digit queries hit the primary key directly.
+  // FTS5 can't help here — eiin is UNINDEXED in schools_fts.
+  if (/^\d+$/.test(query)) {
+    return db.getAllAsync<School>(
+      `SELECT eiin, name, name_bn, level, address, division, district, upazila,
+              latitude, longitude
+       FROM Schools
+       WHERE eiin LIKE ? || '%'
+       ORDER BY eiin
+       LIMIT ? OFFSET ?`,
+      [query, PAGE_SIZE, offset]
+    );
+  }
+
   // Escape FTS5 metacharacters, then add prefix wildcard to every token.
   const ftsQuery =
     query

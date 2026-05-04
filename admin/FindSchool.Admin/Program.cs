@@ -33,8 +33,8 @@ using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.Invarian
         batch.Add(new School
         {
             Eiin = rec.eiin,
-            Name = rec.name,
-            NameBn = rec.name_bn ?? string.Empty,
+            Name = StripLeadingNumber(rec.name),
+            NameBn = StripLeadingNumber(rec.name_bn ?? string.Empty),
             Level = rec.level,
             Address = rec.address,
             Division = rec.division,
@@ -145,6 +145,22 @@ static async Task GeocodeMissingAsync(SchoolDb db, string email, int max)
 
     cache.Flush();
     Console.WriteLine($"Geocoding done: hits={hits} misses={misses} cached={cacheHits}");
+}
+
+static string StripLeadingNumber(string raw)
+{
+    if (string.IsNullOrWhiteSpace(raw)) return raw;
+    var s = raw.Trim();
+
+    // Drop a leading mauza/registration number with optional "No"/"No."/"No-" and any spacing.
+    // Examples: "86no Raypur GPS" → "Raypur GPS", "108 NO. Bhothat" → "Bhothat",
+    // "04 No- Modhupur" → "Modhupur", "189Bodol Gachhi" → "Bodol Gachhi", "21 Nowpara" → "Nowpara".
+    var m = System.Text.RegularExpressions.Regex.Match(
+        s,
+        @"^\d{1,4}\s*(?:no[.\-]?)?\s+(?<rest>\S.+)$",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    return m.Success ? m.Groups["rest"].Value.Trim() : s;
 }
 
 static string BuildQuery(School s)
