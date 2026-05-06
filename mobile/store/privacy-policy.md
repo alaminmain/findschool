@@ -1,7 +1,7 @@
 # Privacy Policy — Find School BD
 
-**Last updated:** 25 April 2026
-**Effective:** 25 April 2026
+**Last updated:** 6 May 2026
+**Effective:** 6 May 2026
 **Publisher:** Find School BD (hello@findschool.app)
 
 ## Plain-language summary
@@ -12,7 +12,8 @@ All searches and map interactions happen on your device.
 ## 1. Information we do not collect
 We do not collect, and we have no servers that receive:
 - your name, email, phone number, or any account identifier
-- your location (the app does not request location permission)
+- your location coordinates (see § 4 — location is used only on-device, only
+  when you tap "Near me", and is never stored or transmitted to us)
 - your searches, tap events, or any analytics
 - any advertising identifier
 
@@ -34,9 +35,17 @@ The following stays on your device and is never transmitted:
   enable it, we will update this policy before the release.
 
 ## 4. Permissions
-The app declares no runtime permissions beyond what the OS grants by default.
-Network access is used only for system-level map rendering when the user
-opens the map tab (tiles from Google); all directory data is local.
+- **Location (foreground only, optional)** — declared as
+  `ACCESS_FINE_LOCATION` / `ACCESS_COARSE_LOCATION` on Android. The app only
+  asks for it the first time you tap **"Near me"** on the map screen. The
+  coordinate is used once, in memory, to recenter the map view and is then
+  discarded. It is never stored on your device, never written to the database,
+  and never transmitted off your device. You can decline or revoke the
+  permission in your device settings at any time; the rest of the app
+  continues to work unchanged.
+- The app declares no other runtime permissions. Network access is used only
+  for system-level map rendering (tiles from Google) when you open the map;
+  all school directory data stays local.
 
 ## 5. Children
 The app is rated for all ages and does not knowingly target children, but

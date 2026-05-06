@@ -23,6 +23,7 @@ public sealed class SchoolDb : IAsyncDisposable
     public async Task InitializeAsync()
     {
         await _conn.CreateTableAsync<School>();
+        await _conn.CreateTableAsync<Metadata>();
         // FTS5 virtual table for fuzzy school-name search on device.
         await _conn.ExecuteAsync(
             @"CREATE VIRTUAL TABLE IF NOT EXISTS schools_fts USING fts5(
@@ -31,6 +32,24 @@ public sealed class SchoolDb : IAsyncDisposable
                 content='Schools', content_rowid='rowid'
             );");
     }
+
+    public async Task SetMetadataAsync(IEnumerable<KeyValuePair<string, string>> entries)
+    {
+        await _conn.RunInTransactionAsync(tx =>
+        {
+            foreach (var kv in entries)
+            {
+                tx.InsertOrReplace(new Metadata { Key = kv.Key, Value = kv.Value });
+            }
+        });
+    }
+
+    public Task<int> CountSchoolsAsync() =>
+        _conn.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Schools");
+
+    public Task<int> CountGeocodedAsync() =>
+        _conn.ExecuteScalarAsync<int>(
+            "SELECT COUNT(*) FROM Schools WHERE latitude IS NOT NULL AND longitude IS NOT NULL");
 
     public async Task BulkInsertAsync(IEnumerable<School> schools)
     {

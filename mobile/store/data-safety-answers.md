@@ -7,9 +7,19 @@ Console. Must stay consistent with `privacy-policy.md`.
 **Does your app collect or share any of the required user data types?**
 → **No**
 
-(If Sentry is later enabled in a release, flip this to Yes and declare:
-"Crash logs" → purpose "App functionality" → collected & shared with
-third-party; data is anonymized; not sold; users can't request deletion.)
+Notes / edge cases:
+- **Approximate / precise location**: The app declares
+  `ACCESS_FINE_LOCATION` so the user can tap "Near me" on the map to recenter
+  it. The coordinate is used once in memory and discarded — **never stored on
+  device, never transmitted, never collected**. Per Play's definition,
+  this does NOT count as "collecting" location, because Play's definition
+  requires data to leave the device or persist beyond the immediate use.
+  Keep "Data collection: No" and answer the location-permission rationale
+  prompt with: "Used only on user tap to recenter map; not stored or shared."
+- **Crash logs (Sentry)**: still off in v1 builds. If enabled in a future
+  release, flip this section to Yes and declare: "Crash logs" → purpose "App
+  functionality" → collected & shared with third-party; data is anonymized;
+  not sold; users can't request deletion.
 
 ## Security practices
 **Is data encrypted in transit?**
@@ -41,3 +51,10 @@ standard?**
 - [ ] Data deletion: Email request available
 - [ ] Ads: No ads
 - [ ] COPPA / GDPR: No personal data handled
+- [ ] Location permission rationale present and matches privacy policy § 4
+
+## Sensitive permissions declared
+- `android.permission.ACCESS_FINE_LOCATION` — foreground only, requested only
+  on user tap of "Near me". Used in-memory to recenter the map; never stored
+  or transmitted. Background location is **disabled** via
+  `expo-location` plugin config (`isAndroidBackgroundLocationEnabled: false`).

@@ -42,4 +42,22 @@ public class School
 
     [Column("geocoded")]
     public bool Geocoded { get; set; }
+
+    // Stats (sourced from IPEMIS CSV, present in scrape but previously dropped).
+    [Column("total_teachers")]
+    public int? TotalTeachers { get; set; }
+
+    [Column("total_students")]
+    public int? TotalStudents { get; set; }
+
+    // Contact info (NOT in IPEMIS API today — kept nullable so when we find
+    // a second source we can populate without another schema migration).
+    [Column("phone")]
+    public string? Phone { get; set; }
+
+    [Column("email")]
+    public string? Email { get; set; }
+
+    [Column("website")]
+    public string? Website { get; set; }
 }

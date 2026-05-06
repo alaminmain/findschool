@@ -43,6 +43,11 @@ using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.Invarian
             Latitude = rec.latitude,
             Longitude = rec.longitude,
             Geocoded = false,
+            TotalTeachers = rec.total_teachers,
+            TotalStudents = rec.total_students,
+            Phone = NullIfBlank(rec.phone),
+            Email = NullIfBlank(rec.email),
+            Website = NullIfBlank(rec.website),
         });
 
         if (batch.Count >= batchSize)
@@ -73,8 +78,22 @@ if (doGeocode)
 }
 
 await db.RebuildFtsAsync();
+
+// Write metadata before VACUUM so it's included in the compacted file.
+var rowCount = await db.CountSchoolsAsync();
+var geocoded = await db.CountGeocodedAsync();
+await db.SetMetadataAsync(new Dictionary<string, string>
+{
+    ["data_as_of"] = DateTime.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+    ["db_version"] = "1",
+    ["row_count"] = rowCount.ToString(CultureInfo.InvariantCulture),
+    ["geocoded_count"] = geocoded.ToString(CultureInfo.InvariantCulture),
+    ["source_primary"] = "IPEMIS DPE",
+});
+
 await db.VacuumAsync();
-Console.WriteLine($"Done. Wrote {dbPath}");
+Console.WriteLine(
+    $"Done. Wrote {dbPath} ({rowCount} schools, {geocoded} geocoded, data_as_of={DateTime.UtcNow:yyyy-MM-dd})");
 return 0;
 
 // --- helpers ---
@@ -174,4 +193,11 @@ static string BuildQuery(School s)
 internal sealed record CsvRow(
     string eiin, string name, string? name_bn, string level, string address,
     string division, string district, string upazila,
-    double? latitude, double? longitude);
+    double? latitude, double? longitude,
+    // Optional columns — CSV header may not have them in older scrapes;
+    // CsvHelper's MissingFieldFound = null leaves them as defaults.
+    int? total_teachers, int? total_students,
+    string? phone, string? email, string? website);
+
+static string? NullIfBlank(string? s) =>
+    string.IsNullOrWhiteSpace(s) ? null : s.Trim();

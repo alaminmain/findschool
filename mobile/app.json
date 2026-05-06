@@ -53,7 +53,17 @@
           "project": "mobile"
         }
       ],
-      "./plugins/withCleanManifest"
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Find School uses your location only when you tap \"Near me\" to center the map. We never store or share your location.",
+          "locationWhenInUsePermission": "Find School uses your location only when you tap \"Near me\" to center the map. We never store or share your location.",
+          "isAndroidBackgroundLocationEnabled": false,
+          "isIosBackgroundLocationEnabled": false
+        }
+      ],
+      "./plugins/withCleanManifest",
+      "expo-localization"
     ],
     "extra": {
       "sentryDsn": "",
