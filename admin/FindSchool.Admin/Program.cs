@@ -171,15 +171,15 @@ static string StripLeadingNumber(string raw)
     if (string.IsNullOrWhiteSpace(raw)) return raw;
     var s = raw.Trim();
 
-    // Drop a leading mauza/registration number with optional "No"/"No."/"No-" and any spacing.
-    // Examples: "86no Raypur GPS" → "Raypur GPS", "108 NO. Bhothat" → "Bhothat",
-    // "04 No- Modhupur" → "Modhupur", "189Bodol Gachhi" → "Bodol Gachhi", "21 Nowpara" → "Nowpara".
-    var m = System.Text.RegularExpressions.Regex.Match(
+    // Drop a leading mauza/registration number prefix.
+    // English: "108 NO. Bhothat", "86no Raypur", "1-NO RAYGHOR", "5.No VATI", "189Bodol", "21 Nowpara".
+    // Bangla : "১০৩ নং ফতেপট্টি" (\d matches Bangla digits, then নং via the alternation),
+    //          and bare-leftover "নং দূর্গাপুর" (second alternation).
+    return System.Text.RegularExpressions.Regex.Replace(
         s,
-        @"^\d{1,4}\s*(?:no[.\-]?)?\s+(?<rest>\S.+)$",
-        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-    return m.Success ? m.Groups["rest"].Value.Trim() : s;
+        @"^(?:\d{1,4}[\s.\-]*(?:no[.\-]?|নং)?[\s.\-]*|নং[\s.\-]+)(?=\S)",
+        "",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase).Trim();
 }
 
 static string BuildQuery(School s)
@@ -190,14 +190,26 @@ static string BuildQuery(School s)
     return string.Join(", ", parts);
 }
 
-internal sealed record CsvRow(
-    string eiin, string name, string? name_bn, string level, string address,
-    string division, string district, string upazila,
-    double? latitude, double? longitude,
-    // Optional columns — CSV header may not have them in older scrapes;
-    // CsvHelper's MissingFieldFound = null leaves them as defaults.
-    int? total_teachers, int? total_students,
-    string? phone, string? email, string? website);
-
 static string? NullIfBlank(string? s) =>
     string.IsNullOrWhiteSpace(s) ? null : s.Trim();
+
+// Mapped by header name, not constructor position — so older scrapes that don't
+// emit phone/email/website columns still load cleanly (those fields stay null).
+internal sealed class CsvRow
+{
+    public string eiin { get; init; } = string.Empty;
+    public string name { get; init; } = string.Empty;
+    public string? name_bn { get; init; }
+    public string level { get; init; } = string.Empty;
+    public string address { get; init; } = string.Empty;
+    public string division { get; init; } = string.Empty;
+    public string district { get; init; } = string.Empty;
+    public string upazila { get; init; } = string.Empty;
+    public double? latitude { get; init; }
+    public double? longitude { get; init; }
+    public int? total_teachers { get; init; }
+    public int? total_students { get; init; }
+    public string? phone { get; init; }
+    public string? email { get; init; }
+    public string? website { get; init; }
+}

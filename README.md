@@ -72,6 +72,44 @@ npx expo run:android
 ```
 On first launch the app copies `find-school.db` from the asset bundle into `documentDirectory/SQLite/` — after that, zero network usage.
 
+## Building the Android app
+
+All commands run from `mobile/`.
+
+### 1) Local dev build (connected device or emulator)
+```powershell
+npm install
+npx expo run:android
+```
+First run scaffolds `android/` and installs a debug build.
+
+### 2) Cloud build via EAS — installable APK (testing)
+```powershell
+npx eas build --profile preview -p android
+```
+Produces an APK you can sideload (`eas.json` → `preview.android.buildType=apk`).
+
+### 3) Cloud build via EAS — production AAB (Play Store)
+```powershell
+npx eas build --profile production -p android
+```
+Produces a signed `.aab` with `autoIncrement` bumping `versionCode`. Submit with:
+```powershell
+npx eas submit -p android --latest
+```
+Requires `play-service-account.json` per `eas.json`.
+
+### 4) Local production AAB (no EAS cloud)
+```powershell
+npx expo prebuild -p android
+cd android
+./gradlew bundleRelease     # AAB → android/app/build/outputs/bundle/release/
+# or: ./gradlew assembleRelease for an APK
+```
+You'll need the upload keystore configured in `android/gradle.properties` for a signed release.
+
+Pre-flight: run `npm run typecheck` and confirm `mobile/assets/db/find-school.db` is present (the shipped DB).
+
 ## How the offline search works
 
 1. The .NET admin tool creates an FTS5 virtual table (`schools_fts`) alongside the main `Schools` table and rebuilds it after the bulk insert.
